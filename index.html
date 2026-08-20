@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>QR Generator</title>
+    <meta
+      name="description"
+      content="Generate a QR code as you type. Choose colors, size, and error correction, then download a PNG."
+    />
+    <meta name="theme-color" content="#27ccc0" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <a class="skip" href="#content">Skip to content</a>
+    <div class="site">
+      <header class="header">
+        <div class="header-inner">
+          <a class="brand" href="./">
+            <svg class="mark mark-plain" viewBox="0 0 36 28" aria-hidden="true" focusable="false">
+              <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.15">
+                <path d="M3 7.2c3.6-3.4 7.2-3.4 10.8 0s7.2 3.4 10.8 0 7.2-3.4 10.8 0" />
+                <path d="M3 14c3.6-3.4 7.2-3.4 10.8 0s7.2 3.4 10.8 0 7.2-3.4 10.8 0" />
+                <path d="M3 20.8c3.6-3.4 7.2-3.4 10.8 0s7.2 3.4 10.8 0 7.2-3.4 10.8 0" />
+              </g>
+            </svg>
+            <span class="brand-name">QR Generator</span>
+          </a>
+        </div>
+      </header>
+
+      <main id="content" class="main">
+        <div class="intro">
+          <h1 class="display">Create</h1>
+          <p>Paste a URL or type any message. The preview updates as you type.</p>
+        </div>
+
+        <form id="qr-form" class="studio" novalidate>
+          <section class="order-settings" aria-labelledby="qr-settings-heading">
+            <h2 id="qr-settings-heading" class="section-title display">Content</h2>
+            <p class="muted">Paste a URL or type any message. The preview updates as you type.</p>
+
+            <div class="field">
+              <label for="qr-content">Text or URL</label>
+              <textarea
+                id="qr-content"
+                name="content"
+                placeholder="https://example.com"
+                autocomplete="off"
+                spellcheck="false"
+                aria-describedby="qr-content-hint"
+              ></textarea>
+              <p id="qr-content-hint" class="hint"><span id="char-count">0</span> characters</p>
+            </div>
+
+            <fieldset>
+              <legend>Palettes</legend>
+              <div class="palettes" id="palettes"></div>
+            </fieldset>
+
+            <div class="colors">
+              <div class="field">
+                <label for="fg-swatch">Foreground</label>
+                <div class="color-row">
+                  <div class="swatch-wrap">
+                    <input id="fg-swatch" type="color" value="#272727" />
+                    <span id="fg-face" class="swatch-face" style="background:#272727"></span>
+                  </div>
+                  <input id="fg-hex" class="hex" type="text" value="#272727" spellcheck="false" autocomplete="off" aria-label="Foreground hex value" />
+                </div>
+              </div>
+              <div class="field">
+                <label for="bg-swatch">Background</label>
+                <div class="color-row">
+                  <div class="swatch-wrap">
+                    <input id="bg-swatch" type="color" value="#ffffff" />
+                    <span id="bg-face" class="swatch-face" style="background:#ffffff"></span>
+                  </div>
+                  <input id="bg-hex" class="hex" type="text" value="#FFFFFF" spellcheck="false" autocomplete="off" aria-label="Background hex value" />
+                </div>
+              </div>
+            </div>
+
+            <div class="field">
+              <div class="field-row">
+                <label for="qr-size">Size</label>
+                <p id="qr-size-value" class="hint">256 px</p>
+              </div>
+              <input
+                id="qr-size"
+                type="range"
+                min="128"
+                max="1024"
+                step="8"
+                value="256"
+                aria-valuetext="256 pixels"
+                aria-describedby="qr-size-value qr-size-hint"
+              />
+              <p id="qr-size-hint" class="hint">Download resolution. Preview scales to fit.</p>
+            </div>
+
+            <fieldset>
+              <legend>Error correction</legend>
+              <p id="qr-ecc-hint" class="hint">Higher levels survive damage, but make denser codes.</p>
+              <div class="ecc" role="radiogroup" aria-describedby="qr-ecc-hint">
+                <label>
+                  <input type="radio" name="level" value="L" />
+                  <span class="ecc-name">Low</span>
+                  <span class="ecc-detail">7% recovery — smallest code</span>
+                </label>
+                <label>
+                  <input type="radio" name="level" value="M" checked />
+                  <span class="ecc-name">Medium</span>
+                  <span class="ecc-detail">15% recovery — everyday use</span>
+                </label>
+                <label>
+                  <input type="radio" name="level" value="Q" />
+                  <span class="ecc-name">Quartile</span>
+                  <span class="ecc-detail">25% recovery — print and wear</span>
+                </label>
+                <label>
+                  <input type="radio" name="level" value="H" />
+                  <span class="ecc-name">High</span>
+                  <span class="ecc-detail">30% recovery — logos or damage</span>
+                </label>
+              </div>
+            </fieldset>
+          </section>
+
+          <section class="order-preview" aria-labelledby="qr-preview-heading">
+            <div class="preview-head">
+              <h2 id="qr-preview-heading" class="section-title display">Preview</h2>
+              <p class="muted">Live output at <span id="preview-size">256</span> pixels with <span id="preview-level">M</span> correction.</p>
+            </div>
+            <div class="preview-plate-wrap" aria-live="polite">
+              <div class="plate" id="plate">
+                <div class="empty" id="empty">
+                  <svg class="mark mark-badge" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+                    <circle cx="16" cy="16" r="16" fill="currentColor" />
+                    <g fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.55">
+                      <path d="M5.8 11c2.55-2.55 5.1-2.55 7.65 0s5.1 2.55 7.65 0 5.1-2.55 7.65 0" />
+                      <path d="M5.8 16c2.55-2.55 5.1-2.55 7.65 0s5.1 2.55 7.65 0 5.1-2.55 7.65 0" />
+                      <path d="M5.8 21c2.55-2.55 5.1-2.55 7.65 0s5.1 2.55 7.65 0 5.1-2.55 7.65 0" />
+                    </g>
+                  </svg>
+                  <p>Type a URL or message</p>
+                </div>
+                <img id="preview-img" class="hidden" alt="" width="256" height="256" />
+                <p id="preview-error" class="warn hidden"></p>
+              </div>
+            </div>
+            <p id="scan-warn" class="warn hidden" role="status"></p>
+            <button id="save-btn" class="btn" type="submit" disabled>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                <polyline points="7 10 12 15 17 10" />
+                <line x1="12" x2="12" y1="15" y2="3" />
+              </svg>
+              Save PNG
+            </button>
+          </section>
+        </form>
+      </main>
+
+      <footer class="footer">
+        <div class="footer-inner">
+          <svg class="mark mark-badge" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+            <circle cx="16" cy="16" r="16" fill="currentColor" />
+            <g fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.55">
+              <path d="M5.8 11c2.55-2.55 5.1-2.55 7.65 0s5.1 2.55 7.65 0 5.1-2.55 7.65 0" />
+              <path d="M5.8 16c2.55-2.55 5.1-2.55 7.65 0s5.1 2.55 7.65 0 5.1-2.55 7.65 0" />
+              <path d="M5.8 21c2.55-2.55 5.1-2.55 7.65 0s5.1 2.55 7.65 0 5.1-2.55 7.65 0" />
+            </g>
+          </svg>
+          <p class="display">QR Generator</p>
+          <p class="footer-copy">Type a URL or any text. Choose colors, size, and correction. Save a PNG.</p>
+        </div>
+      </footer>
+    </div>
+
+    <div id="save-dialog" class="dialog" hidden>
+      <div class="dialog-inner" role="dialog" aria-modal="true" aria-labelledby="save-title" aria-describedby="save-desc">
+        <button id="save-close" class="dialog-close" type="button" aria-label="Close">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M18 6 6 18" />
+            <path d="m6 6 12 12" />
+          </svg>
+        </button>
+        <h2 id="save-title" class="display">Save PNG</h2>
+        <p id="save-desc" class="dialog-copy">
+          Press and hold the image, then choose Save to Photos or Save to Files. You can also share it.
+        </p>
+        <img id="save-img" class="qr-save-image" alt="QR code to save" />
+        <div class="dialog-actions">
+          <button id="share-btn" class="btn btn-inverse" type="button">Share</button>
+          <a id="open-img" class="btn btn-outline" href="#" download="qr-code.png" target="_blank" rel="noopener">Open image</a>
+          <button id="save-done" class="btn btn-ghost" type="button">Done</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="toast" class="toast" role="status"></div>
+
+    <script src="qrcode.min.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
