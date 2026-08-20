@@ -1,20 +1,20 @@
 # QR Generator
 
-A static QR-code generator: live preview as you type, colours, size, error correction, and PNG download. Works on iPhone and iPad (share sheet / press-and-hold).
+Static QR-code generator: live preview as you type, colours, size, error correction, and PNG download. Works on iPhone and iPad (share sheet / press-and-hold).
 
 No backend. No CDN. Open `index.html` locally or on GitHub Pages.
 
-## GitHub Pages
+**Live site:** https://itsjoshheng.github.io/qr/
 
-This repo deploys from `main` via GitHub Actions (`.github/workflows/pages.yml`).
+## Enable GitHub Pages (one click)
 
-After the first push, the site is at:
+This repo is ready to publish from `main`. GitHub does not turn Pages on automatically:
 
-**https://itsjoshheng.github.io/qr/**
+1. Open **[Settings → Pages](https://github.com/itsJoshHeng/qr/settings/pages)**
+2. Under **Build and deployment → Source**, choose **Deploy from a branch**
+3. Branch: **`main`** / folder: **`/ (root)`** → **Save**
 
-If the first Actions run asks you to enable Pages: **Settings → Pages → Source → GitHub Actions**.
-
-You can also skip Actions and set **Settings → Pages → Deploy from a branch → `main` / `/ (root)`**.
+The site is then at **https://itsjoshheng.github.io/qr/** (usually within a minute).
 
 ## Files
 
